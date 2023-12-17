@@ -29,13 +29,22 @@ class Value:
         return self + other
     
     def __sub__(self, other): # self - other
-        return self.data + (-other)
+        return self + (-other)
+    
+    def __rsub__(self, other): # other - self
+        return other + (-self)
+    
+    def __rmul__(self, other): # other * self
+        return self * other
     
     def __truediv__(self, other): # self / other
         return self * other ** -1 
     
     def __rtruediv__(self, other): # other / self
         return other * self ** -1
+    
+    def __rpow__(self, other): # other ** self
+        return Value(other) ** self
 
     def __repr__(self):
         return f"Value(data={self.data}, grad={self.grad})"
