@@ -55,17 +55,17 @@ class TestOperations(unittest.TestCase):
     # Divison
     def testDiv(self):
         a = random.randint(0, 100)
-        b = random.randint(0, 100)
+        b = random.randint(1, 100)
         self.assertEqual(round((Value(a)/Value(b)).data, 8), round(a/b, 8))
     
     def testDivInt(self):
         a = random.randint(0, 100)
-        b = random.randint(0, 100)
+        b = random.randint(1, 100)
         self.assertEqual(round((Value(a)/b).data, 8), round(a/b, 8))
 
     def testRdivInt(self):
         a = random.randint(0, 100)
-        b = random.randint(0, 100)
+        b = random.randint(1, 100)
         self.assertEqual(round((a/Value(b)).data, 8), round(a/b, 8))
 
     # Power
