@@ -1,16 +1,17 @@
 name: Python Unit Tests
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ 'main' ]
+  push:
+    branches: [ 'main' ]
+  
 
 jobs:
   valueEngine:
     name: Value Engine
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
 
     strategy:
       matrix:
