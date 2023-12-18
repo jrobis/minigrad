@@ -1,25 +1,30 @@
 class Value:
     
     ## TODO Add data types (half, fp16, int8, etc.)
-    ## TODO Write test cases
     
-    def __init__(self, data):
+    def __init__(self, data, _children=(), _op=''):
         self.data = data
         self.grad = 0
+        self._prev = set(_children)
+        self._op = _op
 
     def __add__(self, other): # self + other
         other = other if isinstance(other, Value) else Value(other)
-        out = Value(self.data + other.data)
+        out = Value(self.data + other.data, (self, other), '+')
         return out
     
-    def __mul__ (self, other): ## self * other
+    def __mul__ (self, other): # self * other
         other = other if isinstance(other, Value) else Value(other)
-        out = Value(self.data * other.data)
+        out = Value(self.data * other.data, (self, other), '*')
         return out
     
-    def __pow__ (self, other): ## self ** other
+    def __pow__ (self, other): # self ** other
         other = other if isinstance(other, Value) else Value(other)
-        out = Value(self.data ** other.data)
+        out = Value(self.data ** other.data, (self, other), '**')
+        return out
+    
+    def relu (self): # self.relu()
+        out = Value(0 if self.data < 0 else self.data, (self,), 'ReLU')
         return out
     
     def __neg__(self): # -self
