@@ -1,4 +1,5 @@
 import random
+from typing import List
 from minigrad.engine import Value
 
 class Module:
@@ -11,7 +12,7 @@ class Module:
 
 
 class Neuron(Module):
-    def __init__(self, nin, nonlin='relu'):
+    def __init__(self, nin: int, nonlin: str='relu'):
         self.w = [Value(random.uniform(-1,1)) for _ in range(nin)]
         self.b = Value(0)
         self.nonlin = nonlin
@@ -25,3 +26,36 @@ class Neuron(Module):
     
     def __repr__(self):
         return f"{self.nonlin if hasattr(self.b, self.nonlin) else 'Linear'} Neuron({len(self.w)})"
+    
+
+class Layer(Module):
+    def __init__(self, nin: int, nout: int, **kwargs):
+        self.neurons = [Neuron(nin, **kwargs) for _ in range(nout)]
+
+    def __call__(self, x):
+        out = [n(x) for n in self.neurons]
+        return out[0] if len(out) == 1 else out
+
+    def parameters(self):
+        return [p for n in self.neurons for p in n.parameters()]
+
+    def __repr__(self):
+        return f"Layer of [{', '.join(str(n) for n in self.neurons)}]"
+    
+
+class MLP(Module):
+    def __init__(self, nin: int, nouts: List(int), **kwargs):
+        size = [nin] + nouts
+        self.layers = [Layer(sz1, sz2, **kwargs) for sz1, sz2 in zip(size[:-1], size[1:])]
+        self.layers[-1].nonlin = ''
+    
+    def __call__(self, x):
+        for layer in self.layers:
+            x = layer(x)
+        return x
+    
+    def parameters(self):
+        return [p for l in self.layers for p in l.parameters()]
+    
+    def __repr__(self):
+        return f"MLP of [{', '.join(str(l) for l in self.layers)}]"
