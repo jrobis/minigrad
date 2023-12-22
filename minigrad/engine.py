@@ -65,8 +65,6 @@ class Value:
         self.grad = 1
         for node in reversed(topo):
             node._backward()
-
-        
     
     def __neg__(self): # -self
         return self * -1
