@@ -90,5 +90,8 @@ class TestOperations(unittest.TestCase):
         b = random.randint(0, 100)
         self.assertEqual((Value(a)**(1/Value(b))).data, a**(1/b))
 
+
+# TODO Add test cases for Neuron, Layers, MLP
+        
 if __name__ == '__main__':
     unittest.main()

@@ -7,8 +7,8 @@ class Module:
         return []
     
     def zero_grad(self):
-        for i in self.parameters():
-            i.grad = 0
+        for p in self.parameters():
+            p.grad = 0
 
 
 class Neuron(Module):
@@ -44,10 +44,12 @@ class Layer(Module):
     
 
 class MLP(Module):
-    def __init__(self, nin: int, nouts: List(int), **kwargs):
+    def __init__(self, nin: int, nouts: List[int], **kwargs):
         size = [nin] + nouts
-        self.layers = [Layer(sz1, sz2, **kwargs) for sz1, sz2 in zip(size[:-1], size[1:])]
-        self.layers[-1].nonlin = ''
+        self.layers = [Layer(size[i], size[i+1], nonlin='linear' if i==len(nouts)-1 else 'relu') for i in range(len(nouts))]
+
+        # self.layers = [Layer(sz1, sz2, **kwargs) for sz1, sz2 in zip(size[:-1], size[1:])]
+        # self.layers[-1].nonlin = 'linear'
     
     def __call__(self, x):
         for layer in self.layers:
