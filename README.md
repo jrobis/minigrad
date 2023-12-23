@@ -4,7 +4,7 @@ Minigrad is a mini autograd framework inspired by Andrej Karpathy's [micrograd](
 
 The Minigrad package consists of an `engine.py` file which defines the class `Value` which is the basic building block for the framework. In `nn.py` exists additional classes that build on top of the engine including `Neurons`, `Layers`, and `MLP`, used to build out simple MLP networks.
 
-
+The `.github/workflows/test.yml` runs an automated check of the tests located at `test/operations.py` on a push or pull request to ensure the functionality of minigrad is as expected before a merge.
 
 
 ## Example usage
